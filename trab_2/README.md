@@ -42,3 +42,25 @@ stateDiagram-v2
     FINAL --> [*]
 
     ERRO --> [*]
+```
+
+
+## 📊 Tabela de Transições (Máquina de Mealy)
+
+| Estado Atual | Entrada / Condição         | Próximo Estado | Saída Gerada                          |
+|--------------|--------------------------|----------------|---------------------------------------|
+| INICIO       | Recebe entrada           | VALIDACAO      | —                                     |
+| VALIDACAO    | Entrada inválida         | ERRO           | "Entrada inválida" / "Invalid input"  |
+| VALIDACAO    | Entrada válida           | SEPARACAO      | —                                     |
+| SEPARACAO    | n ≥ 1000                 | MILHAR         | —                                     |
+| SEPARACAO    | n < 1000                 | CENTENA        | —                                     |
+| MILHAR       | milhar > 0               | CENTENA        | "<milhar> mil" / "<thousand>"         |
+| CENTENA      | n ≥ 100                  | DEZENA         | "cento..." / "hundred..."             |
+| CENTENA      | n = 0                    | FINAL          | —                                     |
+| DEZENA       | 10 ≤ n ≤ 19              | UNIDADE        | "onze..." / "eleven..."               |
+| DEZENA       | n ≥ 20                   | UNIDADE        | "vinte..." / "twenty..."              |
+| DEZENA       | n < 10                   | FINAL          | —                                     |
+| UNIDADE      | n ≥ 1                    | FINAL          | "um..." / "one..."                    |
+| UNIDADE      | n = 0                    | FINAL          | —                                     |
+| FINAL        | —                        | —              | Resultado completo                    |
+| ERRO         | —                        | —              | Encerramento                          |
