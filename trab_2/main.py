@@ -88,6 +88,12 @@ def numero_para_extenso(n, lang="pt"):
     if resto > 0:
         partes.append(converter_ate_999(resto, lang))
 
+    if len(partes) == 2 and lang == "pt":
+        # Em português, liga milhar com "e" quando o resto é menor que 100
+        # ou quando é uma centena exata (ex.: 20.800 = "vinte mil e oitocentos").
+        conector = " e " if resto < 100 or resto % 100 == 0 else ", "
+        return partes[0] + conector + partes[1]
+
     return ", ".join(partes)
 
 
