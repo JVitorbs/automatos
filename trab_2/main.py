@@ -1,25 +1,29 @@
 import tkinter as tk
 from tkinter import messagebox
 
-# ===================== TABELAS PT =====================
+# ===================== TABELAS =====================
+
 unidades_pt = ["", "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove"]
 especiais_pt = {
     10: "dez", 11: "onze", 12: "doze", 13: "treze", 14: "quatorze",
     15: "quinze", 16: "dezesseis", 17: "dezessete", 18: "dezoito", 19: "dezenove"
 }
-dezenas_pt = ["", "", "vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta", "noventa"]
-centenas_pt = ["", "cento", "duzentos", "trezentos", "quatrocentos", "quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos"]
+dezenas_pt = ["", "", "vinte", "trinta", "quarenta", "cinquenta",
+              "sessenta", "setenta", "oitenta", "noventa"]
+centenas_pt = ["", "cento", "duzentos", "trezentos", "quatrocentos",
+               "quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos"]
 
-# ===================== TABELAS EN =====================
 unidades_en = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 especiais_en = {
     10: "ten", 11: "eleven", 12: "twelve", 13: "thirteen", 14: "fourteen",
     15: "fifteen", 16: "sixteen", 17: "seventeen", 18: "eighteen", 19: "nineteen"
 }
-dezenas_en = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"]
+dezenas_en = ["", "", "twenty", "thirty", "forty", "fifty",
+              "sixty", "seventy", "eighty", "ninety"]
 
-# ===================== LÓGICA =====================
-def converter_ate_999(n, lang="pt"):
+# ===================== SAÍDA (λ) =====================
+
+def lambda_ate_999(n, lang):
     if n == 0:
         return ""
 
@@ -46,7 +50,7 @@ def converter_ate_999(n, lang="pt"):
 
         return " e ".join(partes)
 
-    else:  # inglês
+    else:
         c = n // 100
         d = (n % 100) // 10
         u = n % 10
@@ -66,111 +70,134 @@ def converter_ate_999(n, lang="pt"):
 
         return " ".join(partes)
 
+# ===================== FSM =====================
 
-def numero_para_extenso(n, lang="pt"):
-    if n == 0:
-        return "zero" if lang == "pt" else "zero"
+class MealyFSM:
+    def __init__(self, n, lang):
+        self.n = n
+        self.lang = lang
+        self.state = "q0"
+        self.output = []
+        self.log = []
 
-    milhar = n // 1000
-    resto = n % 1000
+        self.milhar = n // 1000
+        self.resto = n % 1000
 
-    partes = []
+    def step(self):
+        # δ e λ juntos (Mealy)
 
-    if milhar > 0:
-        if lang == "pt":
-            if milhar == 1:
-                partes.append("mil")
+        if self.state == "q0":
+            self.log.append("INITIAL STATE" if self.lang == "en" else "Estado INICIAL")
+            self.state = "q_split"
+
+        elif self.state == "q_split":
+            self.log.append(
+                f"Split: thousand={self.milhar}, rest={self.resto}"
+                if self.lang == "en"
+                else f"Separação: milhar={self.milhar}, resto={self.resto}"
+            )
+
+            if self.milhar > 0:
+                self.state = "q_milhar"
             else:
-                partes.append(converter_ate_999(milhar, lang) + " mil")
-        else:
-            partes.append(converter_ate_999(milhar, lang) + " thousand")
+                self.state = "q_resto"
 
-    if resto > 0:
-        partes.append(converter_ate_999(resto, lang))
+        elif self.state == "q_milhar":
+            texto = lambda_ate_999(self.milhar, self.lang)
 
-    if len(partes) == 2 and lang == "pt":
-        # Em português, liga milhar com "e" quando o resto é menor que 100
-        # ou quando é uma centena exata (ex.: 20.800 = "vinte mil e oitocentos").
-        conector = " e " if resto < 100 or resto % 100 == 0 else ", "
-        return partes[0] + conector + partes[1]
+            if self.lang == "pt":
+                saida = "mil" if self.milhar == 1 else texto + " mil"
+                self.log.append(f"Estado MILHAR -> {saida}")
+            else:
+                saida = texto + " thousand"
+                self.log.append(f"THOUSAND STATE -> {saida}")
 
-    return ", ".join(partes)
+            self.output.append(saida)
 
+            if self.resto > 0:
+                self.state = "q_resto"
+            else:
+                self.state = "qf"
+
+        elif self.state == "q_resto":
+            texto = lambda_ate_999(self.resto, self.lang)
+
+            if self.lang == "pt":
+                self.log.append(f"Estado RESTO -> {texto}")
+            else:
+                self.log.append(f"REMAINDER STATE -> {texto}")
+
+            self.output.append(texto)
+            self.state = "qf"
+
+        elif self.state == "qf":
+            self.log.append("FINAL STATE" if self.lang == "en" else "Estado FINAL")
+
+    def run(self):
+        while self.state != "qf":
+            self.step()
+
+        self.step()  # registra estado final
+
+        # montagem final (regra do português)
+        if len(self.output) == 2 and self.lang == "pt":
+            if self.resto < 100 or self.resto % 100 == 0:
+                return self.output[0] + " e " + self.output[1], "\n".join(self.log)
+            else:
+                return self.output[0] + ", " + self.output[1], "\n".join(self.log)
+
+        return " ".join(self.output), "\n".join(self.log)
 
 # ===================== INTERFACE =====================
-def converter():
-    entrada = entry.get()
-    lang = idioma_var.get()
 
+def converter():
     try:
-        n = int(entrada)
+        n = int(entry.get())
+        lang = idioma.get()
+
         if n < 0 or n > 999999:
             raise ValueError
 
-        resultado = numero_para_extenso(n, lang)
+        fsm = MealyFSM(n, lang)
+        resultado, log = fsm.run()
+
         resultado_label.config(text=resultado)
-
-        # FSM
-        milhar = n // 1000
-        resto = n % 1000
-
-        passos = f"INITIAL STATE -> input: {n}\n" if lang == "en" else f"Estado INICIAL -> entrada: {n}\n"
-        passos += f"Split: thousand={milhar}, rest={resto}\n" if lang == "en" else f"Separação: milhar={milhar}, resto={resto}\n"
-
-        if milhar > 0:
-            texto_milhar = converter_ate_999(milhar, lang)
-            passos += (f"THOUSAND STATE -> {texto_milhar} thousand\n" if lang == "en" 
-                       else f"Estado MILHAR -> {texto_milhar} mil\n")
-
-        if resto > 0:
-            texto_resto = converter_ate_999(resto, lang)
-            passos += (f"HUNDREDS/TENS/UNITS STATE -> {texto_resto}\n" if lang == "en" 
-                       else f"Estado CENTENA/DEZENA/UNIDADE -> {texto_resto}\n")
-
-        passos += "FINAL STATE" if lang == "en" else "Estado FINAL"
-
         passos_text.delete("1.0", tk.END)
-        passos_text.insert(tk.END, passos)
+        passos_text.insert(tk.END, log)
 
     except:
-        messagebox.showerror("Error" if lang == "en" else "Erro",
-                             "Invalid input!" if lang == "en" else "Entrada inválida!")
+        messagebox.showerror(
+            "Error" if idioma.get() == "en" else "Erro",
+            "Invalid input!" if idioma.get() == "en" else "Entrada inválida!"
+        )
 
+# ===================== GUI =====================
 
-# ===================== JANELA =====================
 root = tk.Tk()
-root.title("Number to Words (FSM - Mealy)")
+root.title("FSM Mealy - Number to Words")
 root.geometry("520x420")
 
-# Idioma
-idioma_var = tk.StringVar(value="pt")
+idioma = tk.StringVar(value="pt")
 
-frame_idioma = tk.Frame(root)
-frame_idioma.pack(pady=5)
+frame = tk.Frame(root)
+frame.pack()
 
-tk.Radiobutton(frame_idioma, text="Português", variable=idioma_var, value="pt").pack(side="left")
-tk.Radiobutton(frame_idioma, text="English", variable=idioma_var, value="en").pack(side="left")
+tk.Radiobutton(frame, text="Português", variable=idioma, value="pt").pack(side="left")
+tk.Radiobutton(frame, text="English", variable=idioma, value="en").pack(side="left")
 
-# Entrada
-label = tk.Label(root, text="Digite um número / Enter a number (0-999999):")
-label.pack(pady=5)
+tk.Label(root, text="Número / Number (0-999999):").pack()
 
-entry = tk.Entry(root, width=30)
-entry.pack(pady=5)
+entry = tk.Entry(root)
+entry.pack()
 
-# Botão
-botao = tk.Button(root, text="Converter", command=converter)
-botao.pack(pady=10)
+tk.Button(root, text="Converter", command=converter).pack(pady=10)
 
-# Resultado
-resultado_label = tk.Label(root, text="", wraplength=450, fg="blue")
-resultado_label.pack(pady=10)
+resultado_label = tk.Label(root, fg="blue", wraplength=450)
+resultado_label.pack()
 
-# FSM
-passos_label = tk.Label(root, text="FSM Simulation")
-passos_label.pack()
+tk.Label(root, text="FSM Log").pack()
 
 passos_text = tk.Text(root, height=10, width=65)
-passos_text.pack(pady=5)
+passos_text.pack()
 
 root.mainloop()
