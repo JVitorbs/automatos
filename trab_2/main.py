@@ -182,7 +182,7 @@ idioma = tk.StringVar(value="pt")
 frame = tk.Frame(root)
 frame.pack()
 
-tk.Radiobutton(frame, text="Português", variable=idioma, value="pt").pack(side="left")
+tk.Radiobutton(frame, text="Português", varq_splitiable=idioma, value="pt").pack(side="left")
 tk.Radiobutton(frame, text="English", variable=idioma, value="en").pack(side="left")
 
 tk.Label(root, text="Número / Number (0-999999):").pack()
