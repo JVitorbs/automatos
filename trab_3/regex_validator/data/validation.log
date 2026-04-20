@@ -1,0 +1,11 @@
+2026-04-19 21:49:35,605 | INFO | Validacao tipo=email valid=True valor=jvitorbatista29@gmail.com mensagem=Email valido.
+2026-04-19 21:49:59,598 | WARNING | Validacao tipo=email valid=False valor=jvitorbatista@ mensagem=Email invalido. Use o formato usuario@dominio.tld.
+2026-04-19 22:01:23,589 | INFO | Validacao tipo=email valid=True valor=aluno@ufrn.br mensagem=Email valido.
+2026-04-19 22:03:59,931 | INFO | Validacao tipo=email valid=True valor=jvitorbatista29@hotmail.com mensagem=Email valido.
+2026-04-19 22:04:18,850 | INFO | Validacao tipo=email valid=True valor=vitor.batista.701@ufrn.edu.br mensagem=Email valido.
+2026-04-19 22:04:28,503 | WARNING | Validacao tipo=cpf valid=False valor=vitor.batista.701@ufrn.edu.br mensagem=CPF invalido. Use 000.000.000-00 ou 00000000000.
+2026-04-19 22:04:34,975 | WARNING | Validacao tipo=cpf valid=False valor=121212121211 mensagem=CPF invalido. Use 000.000.000-00 ou 00000000000.
+2026-04-19 22:04:48,558 | INFO | Validacao tipo=cpf valid=True valor=70148081410 mensagem=CPF valido.
+2026-04-19 22:06:07,088 | WARNING | Validacao tipo=senha valid=False valor=00000000 mensagem=Senha invalida. Requisitos: minimo 8 caracteres, 1 letra maiuscula, 1 minuscula, 1 numero e 1 simbolo.
+2026-04-19 22:06:19,927 | WARNING | Validacao tipo=senha valid=False valor=Ab1! mensagem=Senha invalida. Requisitos: minimo 8 caracteres, 1 letra maiuscula, 1 minuscula, 1 numero e 1 simbolo.
+2026-04-19 22:06:25,517 | INFO | Validacao tipo=senha valid=True valor=Ab1!0000 mensagem=Senha forte valida.

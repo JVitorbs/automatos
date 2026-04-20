@@ -1,0 +1,11 @@
+{"valid": true, "message": "Email valido.", "value": "jvitorbatista29@gmail.com", "normalized": "jvitorbatista29@gmail.com", "type": "email", "timestamp": "2026-04-19T21:49:35"}
+{"valid": false, "message": "Email invalido. Use o formato usuario@dominio.tld.", "value": "jvitorbatista@", "type": "email", "timestamp": "2026-04-19T21:49:59"}
+{"valid": true, "message": "Email valido.", "value": "aluno@ufrn.br", "normalized": "aluno@ufrn.br", "type": "email", "timestamp": "2026-04-19T22:01:23"}
+{"valid": true, "message": "Email valido.", "value": "jvitorbatista29@hotmail.com", "normalized": "jvitorbatista29@hotmail.com", "type": "email", "timestamp": "2026-04-19T22:03:59"}
+{"valid": true, "message": "Email valido.", "value": "vitor.batista.701@ufrn.edu.br", "normalized": "vitor.batista.701@ufrn.edu.br", "type": "email", "timestamp": "2026-04-19T22:04:18"}
+{"valid": false, "message": "CPF invalido. Use 000.000.000-00 ou 00000000000.", "value": "vitor.batista.701@ufrn.edu.br", "type": "cpf", "timestamp": "2026-04-19T22:04:28"}
+{"valid": false, "message": "CPF invalido. Use 000.000.000-00 ou 00000000000.", "value": "121212121211", "type": "cpf", "timestamp": "2026-04-19T22:04:34"}
+{"valid": true, "message": "CPF valido.", "value": "70148081410", "normalized": "70148081410", "type": "cpf", "timestamp": "2026-04-19T22:04:48"}
+{"valid": false, "message": "Senha invalida. Requisitos: minimo 8 caracteres, 1 letra maiuscula, 1 minuscula, 1 numero e 1 simbolo.", "value": "00000000", "type": "senha", "timestamp": "2026-04-19T22:06:07"}
+{"valid": false, "message": "Senha invalida. Requisitos: minimo 8 caracteres, 1 letra maiuscula, 1 minuscula, 1 numero e 1 simbolo.", "value": "Ab1!", "type": "senha", "timestamp": "2026-04-19T22:06:19"}
+{"valid": true, "message": "Senha forte valida.", "value": "Ab1!0000", "type": "senha", "timestamp": "2026-04-19T22:06:25"}
