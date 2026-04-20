@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Validacao | Validador RegEx{% endblock %}
+
+{% block content %}
+<section class="hero glass reveal-up">
+    <div>
+        <p class="eyebrow">Aplicacao Web</p>
+        <h1>Validacao inteligente com RegEx e feedback instantaneo</h1>
+        <p class="subtitle">Escolha o tipo de dado, valide e acompanhe tudo no historico persistente.</p>
+    </div>
+</section>
+
+<section class="grid two-col">
+    <article class="glass card reveal-up delay-1">
+        <h2>Validar dado</h2>
+        <form method="post" class="form-stack">
+            {% csrf_token %}
+            <label for="data_type">Tipo de validacao</label>
+            <select id="data_type" name="data_type">
+                <option value="email" {% if selected_type == 'email' %}selected{% endif %}>Email</option>
+                <option value="cpf" {% if selected_type == 'cpf' %}selected{% endif %}>CPF</option>
+                <option value="telefone" {% if selected_type == 'telefone' %}selected{% endif %}>Telefone</option>
+                <option value="senha" {% if selected_type == 'senha' %}selected{% endif %}>Senha Forte</option>
+            </select>
+
+            <label for="value">Valor</label>
+            <input id="value" name="value" type="text" value="{{ input_value }}" placeholder="Digite o valor para validar" required>
+
+            <button type="submit" class="btn-primary">Validar agora</button>
+        </form>
+
+        {% if result %}
+        <div class="result-box {% if result.valid %}ok{% else %}fail{% endif %}">
+            <h3>Resultado</h3>
+            <p><strong>Status:</strong> {% if result.valid %}VALIDO{% else %}INVALIDO{% endif %}</p>
+            <p><strong>Mensagem:</strong> {{ result.message }}</p>
+            <p><strong>Valor:</strong> {{ result.value }}</p>
+            <p><strong>Data/hora:</strong> {{ result.timestamp }}</p>
+            {% if result.normalized %}
+            <p><strong>Normalizado:</strong> {{ result.normalized }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </article>
+
+    <article class="glass card reveal-up delay-2">
+        <h2>Historico recente</h2>
+        {% if recent_history %}
+        <ul class="history-list">
+            {% for item in recent_history %}
+            <li>
+                <span class="pill">{{ item.type }}</span>
+                <span class="status {% if item.valid %}ok{% else %}fail{% endif %}">{% if item.valid %}ok{% else %}falha{% endif %}</span>
+                <p>{{ item.value }}</p>
+                <small>{{ item.timestamp }}</small>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>Nenhum registro ainda. Faça uma validacao para iniciar o historico.</p>
+        {% endif %}
+    </article>
+</section>
+{% endblock %}

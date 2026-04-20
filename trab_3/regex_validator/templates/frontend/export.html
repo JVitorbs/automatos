@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Exportacao | Validador RegEx{% endblock %}
+
+{% block content %}
+<section class="hero glass reveal-up">
+    <div>
+        <p class="eyebrow">Saida de dados</p>
+        <h1>Exportacao JSON</h1>
+        <p class="subtitle">Gere snapshots do historico para compartilhamento ou auditoria.</p>
+    </div>
+</section>
+
+<section class="grid two-col">
+    <article class="glass card reveal-up delay-1">
+        <h2>Gerar exportacao</h2>
+        <form method="post" class="form-stack">
+            {% csrf_token %}
+            <label for="limit">Quantidade de registros (1-1000)</label>
+            <input id="limit" name="limit" type="number" min="1" max="1000" value="{{ limit }}">
+            <button type="submit" class="btn-primary">Exportar para JSON</button>
+        </form>
+
+        {% if export_path %}
+        <div class="result-box ok">
+            <h3>Exportacao concluida</h3>
+            <p>Arquivo criado em:</p>
+            <p><strong>{{ export_path }}</strong></p>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="result-box fail">
+            <h3>Falha na exportacao</h3>
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+    </article>
+
+    <article class="glass card reveal-up delay-2">
+        <h2>Boas praticas</h2>
+        <ul class="tips">
+            <li>Use exportacoes periodicas para manter trilha de auditoria.</li>
+            <li>Combine com o historico para analise de padroes invalidos recorrentes.</li>
+            <li>Armazene o JSON em local versionado quando necessario.</li>
+        </ul>
+    </article>
+</section>
+{% endblock %}

@@ -1,0 +1,15 @@
+from .regex_patterns import (
+    CPF_PATTERN_DIGITS,
+    CPF_PATTERN_MASKED,
+    EMAIL_PATTERN,
+    SENHA_FORTE_PATTERN,
+    TELEFONE_PATTERN,
+)
+
+__all__ = [
+    "CPF_PATTERN_DIGITS",
+    "CPF_PATTERN_MASKED",
+    "EMAIL_PATTERN",
+    "SENHA_FORTE_PATTERN",
+    "TELEFONE_PATTERN",
+]

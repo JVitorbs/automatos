@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | Validador RegEx{% endblock %}
+
+{% block content %}
+<section class="hero glass reveal-up">
+    <div>
+        <p class="eyebrow">Analise</p>
+        <h1>Dashboard de validacoes</h1>
+        <p class="subtitle">Visao consolidada de desempenho da aplicacao e distribuicao por tipo.</p>
+    </div>
+</section>
+
+<section class="metrics-grid reveal-up delay-1">
+    <article class="glass metric-card">
+        <p>Total</p>
+        <h2>{{ total }}</h2>
+    </article>
+    <article class="glass metric-card">
+        <p>Validos</p>
+        <h2>{{ valid_count }}</h2>
+    </article>
+    <article class="glass metric-card">
+        <p>Invalidos</p>
+        <h2>{{ invalid_count }}</h2>
+    </article>
+    <article class="glass metric-card">
+        <p>Taxa de sucesso</p>
+        <h2>{{ success_rate }}%</h2>
+    </article>
+</section>
+
+<section class="grid two-col reveal-up delay-2">
+    <article class="glass card">
+        <h2>Distribuicao por tipo</h2>
+        <div class="bar-list">
+            <div>
+                <label>Email</label>
+                <progress max="{{ total|default:1 }}" value="{{ type_totals.email }}"></progress>
+                <span>{{ type_totals.email }}</span>
+            </div>
+            <div>
+                <label>CPF</label>
+                <progress max="{{ total|default:1 }}" value="{{ type_totals.cpf }}"></progress>
+                <span>{{ type_totals.cpf }}</span>
+            </div>
+            <div>
+                <label>Telefone</label>
+                <progress max="{{ total|default:1 }}" value="{{ type_totals.telefone }}"></progress>
+                <span>{{ type_totals.telefone }}</span>
+            </div>
+            <div>
+                <label>Senha</label>
+                <progress max="{{ total|default:1 }}" value="{{ type_totals.senha }}"></progress>
+                <span>{{ type_totals.senha }}</span>
+            </div>
+        </div>
+    </article>
+
+    <article class="glass card">
+        <h2>Leitura rapida</h2>
+        <p>O dashboard usa os dados do historico persistente para calcular contadores e percentual de sucesso.</p>
+        <p>Como backend e frontend compartilham o mesmo servico, os numeros ficam consistentes entre CLI e Web.</p>
+    </article>
+</section>
+{% endblock %}

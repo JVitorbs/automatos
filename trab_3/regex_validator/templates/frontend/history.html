@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Historico | Validador RegEx{% endblock %}
+
+{% block content %}
+<section class="hero glass reveal-up">
+    <div>
+        <p class="eyebrow">Auditoria</p>
+        <h1>Historico de validacoes</h1>
+        <p class="subtitle">Filtre por tipo e status para analisar o comportamento das entradas.</p>
+    </div>
+</section>
+
+<section class="glass card reveal-up delay-1">
+    <form method="get" class="inline-form">
+        <div>
+            <label for="type">Tipo</label>
+            <select id="type" name="type">
+                <option value="all" {% if filter_type == 'all' %}selected{% endif %}>Todos</option>
+                <option value="email" {% if filter_type == 'email' %}selected{% endif %}>Email</option>
+                <option value="cpf" {% if filter_type == 'cpf' %}selected{% endif %}>CPF</option>
+                <option value="telefone" {% if filter_type == 'telefone' %}selected{% endif %}>Telefone</option>
+                <option value="senha" {% if filter_type == 'senha' %}selected{% endif %}>Senha</option>
+            </select>
+        </div>
+        <div>
+            <label for="status">Status</label>
+            <select id="status" name="status">
+                <option value="all" {% if filter_status == 'all' %}selected{% endif %}>Todos</option>
+                <option value="valid" {% if filter_status == 'valid' %}selected{% endif %}>Validos</option>
+                <option value="invalid" {% if filter_status == 'invalid' %}selected{% endif %}>Invalidos</option>
+            </select>
+        </div>
+        <button type="submit" class="btn-primary">Aplicar filtros</button>
+    </form>
+</section>
+
+<section class="glass card reveal-up delay-2">
+    <h2>Registros</h2>
+    {% if entries %}
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Data/hora</th>
+                    <th>Tipo</th>
+                    <th>Valor</th>
+                    <th>Status</th>
+                    <th>Mensagem</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in entries %}
+                <tr>
+                    <td>{{ item.timestamp }}</td>
+                    <td>{{ item.type }}</td>
+                    <td>{{ item.value }}</td>
+                    <td>
+                        <span class="status {% if item.valid %}ok{% else %}fail{% endif %}">
+                            {% if item.valid %}Valido{% else %}Invalido{% endif %}
+                        </span>
+                    </td>
+                    <td>{{ item.message }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p>Nenhum registro encontrado para o filtro selecionado.</p>
+    {% endif %}
+</section>
+{% endblock %}
