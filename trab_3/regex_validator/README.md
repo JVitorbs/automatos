@@ -211,3 +211,108 @@ As expressoes regulares descrevem linguagens regulares. Toda linguagem regular r
 - cada padrao define um conjunto de cadeias validas
 - o processo de validacao equivale a decidir aceitacao/rejeicao da cadeia
 - a ferramenta conecta teoria de linguagens formais com aplicacao pratica de validacao de dados
+
+## Modelagem da Maquina (visao pratica)
+
+Nesta aplicacao, cada validador funciona como uma maquina de decisao com:
+
+- estado inicial `q0`
+- estados intermediarios que representam regras satisfeitas/parcialmente satisfeitas
+- estado de aceitacao `qA` (entrada valida)
+- estado de rejeicao `qR` (entrada invalida)
+
+Na implementacao Python, parte das transicoes e feita diretamente pela engine de RegEx (`re.fullmatch`) e parte por regras adicionais em codigo.
+
+### 1) Maquina de Email (regular)
+
+Linguagem alvo: `usuario@dominio.tld`.
+
+Estados conceituais:
+
+- `q0`: inicio
+- `q1`: lendo parte local (`[\w.+-]+`)
+- `q2`: encontrou `@`
+- `q3`: lendo dominio base (`[\w-]+`)
+- `q4`: lendo sufixo com ponto (`(?:\.[\w-]+)+`)
+- `qA`: fim da cadeia com formato completo
+- `qR`: qualquer simbolo/transicao invalida
+
+Resumo de transicoes:
+
+- `q0 -> q1` ao ler caractere valido de usuario
+- `q1 -> q2` ao ler `@`
+- `q2 -> q3` ao ler primeiro caractere valido de dominio
+- `q3 -> q4` ao ler `.` seguido de token de dominio
+- `q4 -> qA` no fim da entrada (com pelo menos um sufixo)
+
+### 2) Maquina de Telefone BR (regular + regra semantica)
+
+Formato sintatico aceito: `(DD) 9999-9999` ou `(DD) 99999-9999`.
+
+Estados conceituais de formato:
+
+- `q0`: espera `(`
+- `q1`: 1o digito do DDD
+- `q2`: 2o digito do DDD
+- `q3`: espera `)`
+- `q4`: espera espaco
+- `q5`: bloco inicial de 4 ou 5 digitos
+- `q6`: espera `-`
+- `q7`: bloco final de 4 digitos
+- `qA`: fim da cadeia
+- `qR`: erro de formato
+
+Regra adicional (fora da RegEx):
+
+- apos o match, o DDD nao pode iniciar com `0`; se iniciar, vai para `qR`.
+
+### 3) Maquina de Senha Forte (regular com lookaheads)
+
+Condicoes:
+
+- minimo 8 caracteres
+- ao menos 1 maiuscula
+- ao menos 1 minuscula
+- ao menos 1 digito
+- ao menos 1 simbolo
+
+A RegEx usa lookaheads (`(?=...)`) para garantir que a cadeia possua todos os requisitos. Em termos de automato, e equivalente a intersecao de linguagens regulares:
+
+- `L = L_maiuscula ∩ L_minuscula ∩ L_digito ∩ L_simbolo ∩ L_tamanho`
+
+A entrada e aceita (`qA`) somente se pertencer simultaneamente a todas essas linguagens.
+
+### 4) Maquina de CPF (hibrida: regular + aritmetica)
+
+No CPF, ha duas camadas:
+
+1. Camada regular (formato):
+- aceita `000.000.000-00` ou `00000000000`
+
+2. Camada de verificacao numerica:
+- remove pontuacao
+- rejeita sequencia repetida (ex.: `11111111111`)
+- calcula os 2 digitos verificadores
+- aceita somente se os digitos calculados coincidirem com os informados
+
+Modelagem como maquina composta:
+
+- `M_formato`: automato regular para a sintaxe do CPF
+- `M_checksum`: transdutor/verificador aritmetico
+- decisao final: aceita apenas se `M_formato` aceita E `M_checksum` valida
+
+Formalmente, a linguagem final de CPF valido nao e apenas de formato; ela incorpora restricao aritmetica sobre os digitos.
+
+### 5) Maquina de Orquestracao (servico)
+
+O `ValidatorService` funciona como maquina de controle do sistema:
+
+- `q0`: recebe `(tipo, valor)`
+- `q1`: decide roteamento por `tipo`
+- `q2_tipo`: executa maquina especifica (email/cpf/telefone/senha)
+- `q3`: enriquece payload com `type` e `timestamp`
+- `q4`: persiste historico/log (quando `persist=True`)
+- `qA`: retorna resultado
+- `qR`: tipo invalido
+
+Assim, o sistema completo pode ser visto como composicao de maquinas de validacao com uma maquina de orquestracao de fluxo e persistencia.
