@@ -9,3 +9,11 @@
 {"valid": false, "message": "Senha invalida. Requisitos: minimo 8 caracteres, 1 letra maiuscula, 1 minuscula, 1 numero e 1 simbolo.", "value": "00000000", "type": "senha", "timestamp": "2026-04-19T22:06:07"}
 {"valid": false, "message": "Senha invalida. Requisitos: minimo 8 caracteres, 1 letra maiuscula, 1 minuscula, 1 numero e 1 simbolo.", "value": "Ab1!", "type": "senha", "timestamp": "2026-04-19T22:06:19"}
 {"valid": true, "message": "Senha forte valida.", "value": "Ab1!0000", "type": "senha", "timestamp": "2026-04-19T22:06:25"}
+{"valid": true, "message": "Email valido.", "value": "jvitor@gmail.com", "normalized": "jvitor@gmail.com", "type": "email", "timestamp": "2026-04-22T15:46:14"}
+{"valid": false, "message": "Email invalido. Use o formato usuario@dominio.tld.", "value": "jvitorgmail.com", "type": "email", "timestamp": "2026-04-22T15:46:21"}
+{"valid": false, "message": "Senha invalida. Requisitos: minimo 8 caracteres, 1 letra maiuscula, 1 minuscula, 1 numero e 1 simbolo.", "value": "qwwqwqwqwq", "type": "senha", "timestamp": "2026-04-22T15:46:38"}
+{"valid": true, "message": "Email valido.", "value": "jvitorbatista29@gmail.com", "normalized": "jvitorbatista29@gmail.com", "type": "email", "timestamp": "2026-04-22T17:22:16"}
+{"valid": false, "message": "Email invalido. Use o formato usuario@dominio.tld.", "value": "jvitorbatista29.gmail.com", "type": "email", "timestamp": "2026-04-22T17:22:29"}
+{"valid": false, "message": "Senha invalida. Requisitos: minimo 8 caracteres, 1 letra maiuscula, 1 minuscula, 1 numero e 1 simbolo.", "value": "aaaaaaaa", "type": "senha", "timestamp": "2026-04-22T17:22:54"}
+{"valid": true, "message": "Senha forte valida.", "value": "Ab1!1234", "type": "senha", "timestamp": "2026-04-22T17:23:21"}
+{"valid": false, "message": "Senha invalida. Requisitos: minimo 8 caracteres, 1 letra maiuscula, 1 minuscula, 1 numero e 1 simbolo.", "value": "Ab111234", "type": "senha", "timestamp": "2026-04-22T17:23:28"}

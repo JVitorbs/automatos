@@ -9,3 +9,11 @@
 2026-04-19 22:06:07,088 | WARNING | Validacao tipo=senha valid=False valor=00000000 mensagem=Senha invalida. Requisitos: minimo 8 caracteres, 1 letra maiuscula, 1 minuscula, 1 numero e 1 simbolo.
 2026-04-19 22:06:19,927 | WARNING | Validacao tipo=senha valid=False valor=Ab1! mensagem=Senha invalida. Requisitos: minimo 8 caracteres, 1 letra maiuscula, 1 minuscula, 1 numero e 1 simbolo.
 2026-04-19 22:06:25,517 | INFO | Validacao tipo=senha valid=True valor=Ab1!0000 mensagem=Senha forte valida.
+2026-04-22 15:46:14,220 | INFO | Validacao tipo=email valid=True valor=jvitor@gmail.com mensagem=Email valido.
+2026-04-22 15:46:21,341 | WARNING | Validacao tipo=email valid=False valor=jvitorgmail.com mensagem=Email invalido. Use o formato usuario@dominio.tld.
+2026-04-22 15:46:38,452 | WARNING | Validacao tipo=senha valid=False valor=qwwqwqwqwq mensagem=Senha invalida. Requisitos: minimo 8 caracteres, 1 letra maiuscula, 1 minuscula, 1 numero e 1 simbolo.
+2026-04-22 17:22:16,388 | INFO | Validacao tipo=email valid=True valor=jvitorbatista29@gmail.com mensagem=Email valido.
+2026-04-22 17:22:29,045 | WARNING | Validacao tipo=email valid=False valor=jvitorbatista29.gmail.com mensagem=Email invalido. Use o formato usuario@dominio.tld.
+2026-04-22 17:22:54,413 | WARNING | Validacao tipo=senha valid=False valor=aaaaaaaa mensagem=Senha invalida. Requisitos: minimo 8 caracteres, 1 letra maiuscula, 1 minuscula, 1 numero e 1 simbolo.
+2026-04-22 17:23:21,644 | INFO | Validacao tipo=senha valid=True valor=Ab1!1234 mensagem=Senha forte valida.
+2026-04-22 17:23:28,689 | WARNING | Validacao tipo=senha valid=False valor=Ab111234 mensagem=Senha invalida. Requisitos: minimo 8 caracteres, 1 letra maiuscula, 1 minuscula, 1 numero e 1 simbolo.
